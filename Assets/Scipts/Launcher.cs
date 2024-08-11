@@ -26,6 +26,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     public TMP_InputField NameInputText;
     public string LevelToPlay;
     public GameObject StartButton;
+    public GameObject RoomTestButton;
 
     #endregion
 
@@ -56,6 +57,11 @@ public class Launcher : MonoBehaviourPunCallbacks
         LoadingScreen.SetActive(true);
         LoadingText.text = "Connecting To Network...";
         PhotonNetwork.ConnectUsingSettings(); /// Uses photon server settings to connect to photon network
+
+#if UNITY_EDITOR
+        RoomTestButton.SetActive(true);
+#endif
+
     }
 
     /// <summary>
@@ -346,6 +352,19 @@ public class Launcher : MonoBehaviourPunCallbacks
         {
             StartButton.SetActive(false);
         }
+    }
+
+    /// <summary>
+    /// Method to run quick join on unity editor for test
+    /// </summary>
+    public void QuickJoin()
+    {
+        RoomOptions options = new RoomOptions();
+        options.MaxPlayers = 8;
+        PhotonNetwork.CreateRoom("Test", options);
+        CloseMenus();
+        LoadingText.text = "Creating Room...";
+        LoadingScreen.SetActive(true);
     }
 
     /// <summary>
