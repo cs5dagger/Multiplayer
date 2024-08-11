@@ -10,6 +10,8 @@ using TMPro;
 
 public class UIController : MonoBehaviour
 {
+    #region Instance
+    
     public static UIController instance;
 
     void Awake()
@@ -17,18 +19,18 @@ public class UIController : MonoBehaviour
         instance = this;
     }
 
+    #endregion
+
+    #region Public Variables
+    
     public TMP_Text OverheatedMessage;
     public Slider WeaponTemperatureSlider;
+    public GameObject DeathScreen;
+    public TMP_Text DeathText;
+    
+    #endregion
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    #region Methods and Overrides
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    #endregion
 }

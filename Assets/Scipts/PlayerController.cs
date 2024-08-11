@@ -229,21 +229,21 @@ public class PlayerController : MonoBehaviourPunCallbacks
     /// When bullet deal damage
     /// </summary>
     [PunRPC]
-    public void DealDamage(string damager)
+    public void DealDamage(string killer)
     {
-        TakeDamage(damager);
+        TakeDamage(killer);
     }
 
     /// <summary>
     /// Sequence to perform when damage is taken or bullet hits player
     /// </summary>
     /// <param name="damager"></param>
-    public void TakeDamage(string damager)
+    public void TakeDamage(string killer)
     {
         if(photonView.IsMine)
         {
-            //Debug.Log(photonView.Owner.NickName + " been hit by " + damager);
-            PlayerSpawner.instance.Die();
+            //Debug.Log(photonView.Owner.NickName + " been hit by " + killer);
+            PlayerSpawner.instance.Die(killer);
         }
     }
 

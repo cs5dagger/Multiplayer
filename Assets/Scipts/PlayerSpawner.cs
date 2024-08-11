@@ -17,6 +17,7 @@ public class PlayerSpawner : MonoBehaviour
     #region Public Variables
     public GameObject PlayerPrefab;
     public GameObject DeathEffect;
+    public float RespawnWaitTime = 5f;
 
     #endregion
 
@@ -48,10 +49,27 @@ public class PlayerSpawner : MonoBehaviour
     /// <summary>
     /// Actions to perform on player death
     /// </summary>
-    public void Die()
+    public void Die(string killer)
+    {
+        UIController.instance.DeathText.text = "You were killed by : " + killer;
+
+        if(player != null)
+        {
+            StartCoroutine(DieCoroutine());
+        }
+    }
+
+    /// <summary>
+    /// Respawn player after seconds
+    /// </summary>
+    /// <returns></returns>
+    public IEnumerator DieCoroutine()
     {
         PhotonNetwork.Instantiate(DeathEffect.name, player.transform.position, Quaternion.identity);
         PhotonNetwork.Destroy(player);
+        UIController.instance.DeathScreen.SetActive(true);
+        yield return new WaitForSeconds(RespawnWaitTime);
+        UIController.instance.DeathScreen.SetActive(false);
         SpawnPlayer();
     }
     #endregion
