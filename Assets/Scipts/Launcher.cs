@@ -331,6 +331,19 @@ public class Launcher : MonoBehaviourPunCallbacks
         PhotonNetwork.LoadLevel(LevelToPlay);
     }
 
+    public override void OnMasterClientSwitched(Player newMasterClient)
+    {
+        /// if current player is the master enable start game button
+        if (PhotonNetwork.IsMasterClient)
+        {
+            StartButton.SetActive(true);
+        }
+        else
+        {
+            StartButton.SetActive(false);
+        }
+    }
+
     /// <summary>
     /// Close Game window (only builds)
     /// </summary>
