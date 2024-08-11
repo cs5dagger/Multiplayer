@@ -44,10 +44,7 @@ public class PlayerController : MonoBehaviour
         camera = Camera.main;
         UIController.instance.WeaponTemperatureSlider.maxValue = MaxHeat;
         SwitchGun();
-        // use spawn points from spawn manager
-        Transform newTransform = SpawnManager.instance.GetSpawnPoint();
-        transform.position = newTransform.position;
-        transform.rotation = newTransform.rotation;
+        // removed spawn here as we want to handle this through player spawner
     }
 
     // Update is called once per frame
