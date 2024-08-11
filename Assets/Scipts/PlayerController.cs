@@ -38,6 +38,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
     public Gun[] AllGuns;
     private int SelectedGun;
 
+    public GameObject PlayerHitImpact;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -197,10 +199,18 @@ public class PlayerController : MonoBehaviourPunCallbacks
         /// get information of what the ray hit
         if(Physics.Raycast(ray, out RaycastHit hit))
         {
-            Debug.Log($"Hit {hit.collider.gameObject.name}");
-            /// effect should rotate according to the surface, face is looking
-            GameObject bulletImpactObject = Instantiate(BulletImpact, hit.point + (hit.normal * 0.002f), Quaternion.LookRotation(hit.normal, Vector3.up));
-            Destroy(bulletImpactObject, 1f);
+            /// if we hit player
+            if(hit.collider.gameObject.tag.Equals("Player"))
+            {
+                //Debug.Log("Hit " + hit.collider.gameObject.GetPhotonView().Owner.NickName);
+                PhotonNetwork.Instantiate(PlayerHitImpact.name, hit.point, Quaternion.identity);
+            }
+            else
+            {
+                /// effect should rotate according to the surface, face is looking
+                GameObject bulletImpactObject = Instantiate(BulletImpact, hit.point + (hit.normal * 0.002f), Quaternion.LookRotation(hit.normal, Vector3.up));
+                Destroy(bulletImpactObject, 1f);
+            }
         }
         ShotCounter = AllGuns[SelectedGun].TimeBetweenShots;
         HeatCounter += AllGuns[SelectedGun].HeatPerShot;
