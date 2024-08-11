@@ -16,6 +16,7 @@ public class PlayerSpawner : MonoBehaviour
 
     #region Public Variables
     public GameObject PlayerPrefab;
+    public GameObject DeathEffect;
 
     #endregion
 
@@ -44,5 +45,14 @@ public class PlayerSpawner : MonoBehaviour
         player = PhotonNetwork.Instantiate(PlayerPrefab.name, spawnPoint.position, spawnPoint.rotation);
     }
 
+    /// <summary>
+    /// Actions to perform on player death
+    /// </summary>
+    public void Die()
+    {
+        PhotonNetwork.Instantiate(DeathEffect.name, player.transform.position, Quaternion.identity);
+        PhotonNetwork.Destroy(player);
+        SpawnPlayer();
+    }
     #endregion
 }
