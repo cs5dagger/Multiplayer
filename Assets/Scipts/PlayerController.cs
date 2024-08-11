@@ -204,6 +204,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
             {
                 //Debug.Log("Hit " + hit.collider.gameObject.GetPhotonView().Owner.NickName);
                 PhotonNetwork.Instantiate(PlayerHitImpact.name, hit.point, Quaternion.identity);
+                hit.collider.gameObject.GetPhotonView().RPC("DealDamage", RpcTarget.All, photonView.Owner.NickName);
             }
             else
             {
@@ -222,6 +223,15 @@ public class PlayerController : MonoBehaviourPunCallbacks
         }
         AllGuns[SelectedGun].MuzzleFlash.SetActive(true);
         MuzzleCounter = MuzzleDisplayTime;
+    }
+
+    /// <summary>
+    /// When bullet deal damage
+    /// </summary>
+    [PunRPC]
+    public void DealDamage(string Damager)
+    {
+        Debug.Log("I have been hit by " + Damager);
     }
 
     private void LateUpdate()
