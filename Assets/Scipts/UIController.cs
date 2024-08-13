@@ -27,6 +27,7 @@ public class UIController : MonoBehaviour
     public Slider WeaponTemperatureSlider;
     public GameObject DeathScreen;
     public TMP_Text DeathText;
+    public Slider HealthSlider;
     
     #endregion
 
