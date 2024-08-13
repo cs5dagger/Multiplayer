@@ -40,6 +40,9 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     public GameObject PlayerHitImpact;
 
+    public int MaxHealth = 200;
+    private int CurrentHealth;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -47,6 +50,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
         camera = Camera.main;
         UIController.instance.WeaponTemperatureSlider.maxValue = MaxHeat;
         SwitchGun();
+        CurrentHealth = MaxHealth;
         // removed spawn here as we want to handle this through player spawner
     }
 
@@ -204,7 +208,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
             {
                 //Debug.Log("Hit " + hit.collider.gameObject.GetPhotonView().Owner.NickName);
                 PhotonNetwork.Instantiate(PlayerHitImpact.name, hit.point, Quaternion.identity);
-                hit.collider.gameObject.GetPhotonView().RPC("DealDamage", RpcTarget.All, photonView.Owner.NickName);
+                hit.collider.gameObject.GetPhotonView().RPC("DealDamage", RpcTarget.All, photonView.Owner.NickName, AllGuns[SelectedGun].ShotDamage);
             }
             else
             {
@@ -229,21 +233,26 @@ public class PlayerController : MonoBehaviourPunCallbacks
     /// When bullet deal damage
     /// </summary>
     [PunRPC]
-    public void DealDamage(string killer)
+    public void DealDamage(string killer, int damageAmount)
     {
-        TakeDamage(killer);
+        TakeDamage(killer, damageAmount);
     }
 
     /// <summary>
     /// Sequence to perform when damage is taken or bullet hits player
     /// </summary>
     /// <param name="damager"></param>
-    public void TakeDamage(string killer)
+    public void TakeDamage(string killer, int damageAmount)
     {
         if(photonView.IsMine)
         {
             //Debug.Log(photonView.Owner.NickName + " been hit by " + killer);
-            PlayerSpawner.instance.Die(killer);
+            CurrentHealth -= damageAmount;
+            if(CurrentHealth <= 0 )
+            {
+                CurrentHealth = 0;
+                PlayerSpawner.instance.Die(killer);
+            }
         }
     }
 
