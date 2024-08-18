@@ -42,6 +42,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     public int MaxHealth = 200;
     private int CurrentHealth;
+    public Animator PlayerAnimator;
 
     // Start is called before the first frame update
     void Start()
@@ -181,6 +182,10 @@ public class PlayerController : MonoBehaviourPunCallbacks
                     SwitchGun();
                 }
             }
+
+            PlayerAnimator.SetBool("grounded", IsGrounded);
+            /// magnitude represents the distance being covered
+            PlayerAnimator.SetFloat("speed", MoveDirection.magnitude);
 
             if (Input.GetKeyDown(KeyCode.Escape))
             {
