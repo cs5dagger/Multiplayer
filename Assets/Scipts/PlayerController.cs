@@ -43,6 +43,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
     public int MaxHealth = 200;
     private int CurrentHealth;
     public Animator PlayerAnimator;
+    public GameObject PlayerModel;
 
     // Start is called before the first frame update
     void Start()
@@ -52,9 +53,15 @@ public class PlayerController : MonoBehaviourPunCallbacks
         UIController.instance.WeaponTemperatureSlider.maxValue = MaxHeat;
         SwitchGun();
         CurrentHealth = MaxHealth;
-        UIController.instance.HealthSlider.maxValue = MaxHealth;
-        UIController.instance.HealthSlider.value = CurrentHealth;
         // removed spawn here as we want to handle this through player spawner
+        /// if in first person view, disable player model locally not on network
+        /// it will be visible on network to other players
+        if(photonView.IsMine)
+        {
+            PlayerModel.SetActive(false);
+            UIController.instance.HealthSlider.maxValue = MaxHealth;
+            UIController.instance.HealthSlider.value = CurrentHealth;
+        }
     }
 
     // Update is called once per frame
