@@ -52,8 +52,9 @@ public class PlayerController : MonoBehaviourPunCallbacks
         Cursor.lockState = CursorLockMode.Locked;
         camera = Camera.main;
         UIController.instance.WeaponTemperatureSlider.maxValue = MaxHeat;
-        SwitchGun();
+        //SwitchGun();
         CurrentHealth = MaxHealth;
+        photonView.RPC("SetGun", RpcTarget.All, SelectedGun);
         // removed spawn here as we want to handle this through player spawner
         /// if in first person view, disable player model locally not on network
         /// it will be visible on network to other players
@@ -174,7 +175,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
                 {
                     SelectedGun = 0;
                 }
-                SwitchGun();
+                photonView.RPC("SetGun", RpcTarget.All, SelectedGun);
             }
             // check in opposite direction
             else if (Input.GetAxisRaw("Mouse ScrollWheel") < 0f)
@@ -184,7 +185,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
                 {
                     SelectedGun = AllGuns.Length - 1;
                 }
-                SwitchGun();
+                photonView.RPC("SetGun", RpcTarget.All, SelectedGun);
             }
 
             // switch weapon using num keys
@@ -193,7 +194,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
                 if (Input.GetKeyDown((i + 1).ToString()))
                 {
                     SelectedGun = i;
-                    SwitchGun();
+                    photonView.RPC("SetGun", RpcTarget.All, SelectedGun);
                 }
             }
 
@@ -299,5 +300,19 @@ public class PlayerController : MonoBehaviourPunCallbacks
         }
         AllGuns[SelectedGun].gameObject.SetActive(true);
         AllGuns[SelectedGun].MuzzleFlash.SetActive(false);
+    }
+
+    /// <summary>
+    /// Set gun for all characters to be visible
+    /// </summary>
+    /// <param name="GunToSwitchTo"></param>
+    [PunRPC]
+    public void SetGun(int GunToSwitchTo)
+    {
+        if(GunToSwitchTo < AllGuns.Length)
+        {
+            SelectedGun = GunToSwitchTo;
+            SwitchGun();
+        }
     }
 }
