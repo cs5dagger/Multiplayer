@@ -70,7 +70,6 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
         {
             EventCodes theEvent = (EventCodes)photonEvent.Code;
             object[] data = (object[])photonEvent.CustomData;
-            Debug.Log($"Recieved event {theEvent}");
             
             switch(theEvent)
             {
@@ -111,7 +110,8 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
     /// </summary>
     public void NewPlayerReceive(object[] dataRecieved)
     {
-
+        PlayerInfo playerInfo = new PlayerInfo((string)dataRecieved[0], (int)dataRecieved[1], (int)dataRecieved[2], (int)dataRecieved[3]);
+        AllPlayers.Add(playerInfo);
     }
 
     /// <summary>
