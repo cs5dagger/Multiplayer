@@ -20,7 +20,7 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
     {
         NewPlayer,
         ListPlayers,
-        ChangeStat
+        UpdateStat
     }
 
     #endregion
@@ -49,11 +49,6 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
     }
 
-    public void OnEvent(EventData photonEvent)
-    {
-
-    }
-
     public override void OnEnable()
     {
         PhotonNetwork.AddCallbackTarget(this);
@@ -62,6 +57,77 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
     public override void OnDisable()
     {
         PhotonNetwork.RemoveCallbackTarget(this);
+    }
+
+    public void OnEvent(EventData photonEvent)
+    {
+        /// Code above 200 are reserved by photon
+        if(photonEvent.Code < 200)
+        {
+            EventCodes theEvent = (EventCodes)photonEvent.Code;
+            object[] data = (object[])photonEvent.CustomData;
+            
+            switch(theEvent)
+            {
+                case EventCodes.NewPlayer:
+                    NewPlayerReceive(data);
+                    break;
+                case EventCodes.ListPlayers:
+                    ListPlayersReceive(data);
+                    break;
+                case EventCodes.UpdateStat:
+                    UpdateStatsReceive(data);
+                    break;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Send new player
+    /// </summary>
+    public void NewPlayerSend()
+    {
+
+    }
+
+    /// <summary>
+    /// Recieve new player
+    /// </summary>
+    public void NewPlayerReceive(object[] dataRecieved)
+    {
+
+    }
+
+    /// <summary>
+    /// Send new player list
+    /// </summary>
+    public void ListPlayersSend()
+    {
+
+    }
+
+    /// <summary>
+    /// Recieve new player list
+    /// </summary>
+    public void ListPlayersReceive(object[] dataRecieved)
+    {
+
+    }
+
+    /// <summary>
+    /// Send new stats
+    /// </summary>
+    public void UpdateStatsSend()
+    {
+
+    }
+
+    /// <summary>
+    /// Recieve new stats
+    /// </summary>
+    public void UpdateStatsReceive(object[] dataRecieved)
+    {
+
     }
 
     #endregion
