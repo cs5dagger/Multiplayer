@@ -53,12 +53,12 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
     }
 
-    public override void OnEnable()
+    public void OnEnable()
     {
         PhotonNetwork.AddCallbackTarget(this);
     }
 
-    public override void OnDisable()
+    public void OnDisable()
     {
         PhotonNetwork.RemoveCallbackTarget(this);
     }
@@ -70,7 +70,6 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
         {
             EventCodes theEvent = (EventCodes)photonEvent.Code;
             object[] data = (object[])photonEvent.CustomData;
-            
             switch(theEvent)
             {
                 case EventCodes.NewPlayer:
@@ -112,6 +111,7 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
     {
         PlayerInfo playerInfo = new PlayerInfo((string)dataRecieved[0], (int)dataRecieved[1], (int)dataRecieved[2], (int)dataRecieved[3]);
         AllPlayers.Add(playerInfo);
+        ListPlayersSend();
     }
 
     /// <summary>
@@ -119,7 +119,25 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
     /// </summary>
     public void ListPlayersSend()
     {
+        object[] package = new object[AllPlayers.Count];
+        
+        for(int i = 0; i < AllPlayers.Count; i++)
+        {
+            object[] packagePiece = new object[4];
+            packagePiece[0] = AllPlayers[i].name;
+            packagePiece[1] = AllPlayers[i].actor;
+            packagePiece[2] = AllPlayers[i].kills;
+            packagePiece[3] = AllPlayers[i].death;
 
+            package[i] = packagePiece;
+        }
+
+        PhotonNetwork.RaiseEvent(
+            (byte)EventCodes.ListPlayers,
+            package,
+            new RaiseEventOptions { Receivers = ReceiverGroup.All},
+            new SendOptions { Reliability = true }
+            );
     }
 
     /// <summary>
@@ -127,7 +145,25 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
     /// </summary>
     public void ListPlayersReceive(object[] dataRecieved)
     {
+        AllPlayers.Clear();
+        Debug.Log("all players cleared!!!");
+        for(int i  = 0; i < dataRecieved.Length; i++)
+        {
+            object[] piece = (object[])dataRecieved[i];
+            PlayerInfo player = new PlayerInfo(
+                (string)piece[0],
+                (int)piece[1],
+                (int)piece[2],
+                (int)piece[3]
+                );
+            AllPlayers.Add(player);
 
+            if(PhotonNetwork.LocalPlayer.ActorNumber == player.actor)
+            {
+                /// Current (our) player number
+                index = i;
+            }
+        }
     }
 
     /// <summary>

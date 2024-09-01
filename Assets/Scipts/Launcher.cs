@@ -296,6 +296,11 @@ public class Launcher : MonoBehaviourPunCallbacks
                 newButton.gameObject.SetActive(true);
                 AllRoomButtons.Add(newButton);
             }
+            /// Workaround for data not updating when player joins an already started room
+            if (!roomList[i].IsOpen)
+            {
+                AllRoomButtons[i].gameObject.SetActive(false);
+            }
         }
     }
 
@@ -335,6 +340,8 @@ public class Launcher : MonoBehaviourPunCallbacks
     public void StartGame()
     {
         PhotonNetwork.LoadLevel(LevelToPlay);
+        /// Workaround for data not updating when player joins an already started room
+        PhotonNetwork.CurrentRoom.IsOpen = false;
     }
 
     /// <summary>
