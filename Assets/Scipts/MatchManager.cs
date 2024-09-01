@@ -146,7 +146,6 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
     public void ListPlayersReceive(object[] dataRecieved)
     {
         AllPlayers.Clear();
-        Debug.Log("all players cleared!!!");
         for(int i  = 0; i < dataRecieved.Length; i++)
         {
             object[] piece = (object[])dataRecieved[i];
@@ -169,9 +168,15 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
     /// <summary>
     /// Send new stats
     /// </summary>
-    public void UpdateStatsSend()
+    public void UpdateStatsSend(int actorSending, int statToUpdate, int amountToChange)
     {
-
+        object[] package = new object[] { actorSending, statToUpdate, amountToChange};
+        PhotonNetwork.RaiseEvent(
+            (byte)EventCodes.UpdateStat,
+            package,
+            new RaiseEventOptions { Receivers = ReceiverGroup.All },
+            new SendOptions { Reliability = true }
+            );
     }
 
     /// <summary>
@@ -179,7 +184,28 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
     /// </summary>
     public void UpdateStatsReceive(object[] dataRecieved)
     {
+        int actor = (int)dataRecieved[0];
+        int statType = (int)dataRecieved[1];
+        int amount = (int)dataRecieved[2];
 
+        for(int i = 0;i < AllPlayers.Count; i++)
+        {
+            if (AllPlayers[i].actor == actor)
+            {
+                switch(statType)
+                {
+                    case 0: // kills
+                        AllPlayers[i].kills += amount;
+                        Debug.Log($"plaayer: {AllPlayers[i].name} kills: {AllPlayers[i].kills}");
+                        break;
+                    case 1: // deaths
+                        AllPlayers[i].death += amount;
+                        Debug.Log($"plaayer: {AllPlayers[i].name} death: {AllPlayers[i].death}");
+                        break;
+                }
+                break;
+            }
+        }
     }
 
     #endregion
