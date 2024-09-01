@@ -30,6 +30,8 @@ public class UIController : MonoBehaviour
     public Slider HealthSlider;
     public TMP_Text KillsText;
     public TMP_Text DeathsLabel;
+    public GameObject LeaderBoard;
+    public LeaderBoardPlayer leaderBoardPlayerDisplay;
     
     #endregion
 

@@ -31,6 +31,7 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
     #region Private Variables
     private int index;
+    private List<LeaderBoardPlayer> leaderBoardPlayers = new List<LeaderBoardPlayer>();
 
     #endregion
 
@@ -50,7 +51,17 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
     void Update()
     {
-
+        if(Input.GetKeyDown(KeyCode.Tab))
+        {
+            if(UIController.instance.LeaderBoard.activeInHierarchy)
+            {
+                UIController.instance.LeaderBoard.SetActive(false);
+            }
+            else
+            {
+                ShowLeaderBoard();
+            }
+        }
     }
 
     public override void OnEnable()
@@ -225,6 +236,30 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
         {
             UIController.instance.KillsText.text = "KILLS: 0";
             UIController.instance.DeathsLabel.text = "DEATHS: 0";
+        }
+    }
+
+    /// <summary>
+    /// Display leaderboard
+    /// </summary>
+    void ShowLeaderBoard()
+    {
+        UIController.instance.LeaderBoard.SetActive(true);
+
+        foreach(LeaderBoardPlayer lp in leaderBoardPlayers)
+        {
+            Destroy(lp.gameObject);
+        }
+        leaderBoardPlayers.Clear();
+
+        UIController.instance.leaderBoardPlayerDisplay.gameObject.SetActive(false);
+
+        foreach(PlayerInfo player in AllPlayers)
+        {
+            LeaderBoardPlayer newPlayerDisplay = Instantiate(UIController.instance.leaderBoardPlayerDisplay, UIController.instance.leaderBoardPlayerDisplay.transform.parent);
+            newPlayerDisplay.SetDetails(player.name, player.kills, player.death);
+            newPlayerDisplay.gameObject.SetActive(true);
+            leaderBoardPlayers.Add(newPlayerDisplay);
         }
     }
 
