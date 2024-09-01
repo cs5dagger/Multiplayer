@@ -35,7 +35,7 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
     #endregion
 
     #region Methods and Overrides
-    private void Start()
+    void Start()
     {
         /// If not connected to network, load main menu scene
         if(!PhotonNetwork.IsConnected)
@@ -48,17 +48,17 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
         }
     }
 
-    private void Update()
+    void Update()
     {
 
     }
 
-    public void OnEnable()
+    public override void OnEnable()
     {
         PhotonNetwork.AddCallbackTarget(this);
     }
 
-    public void OnDisable()
+    public override void OnDisable()
     {
         PhotonNetwork.RemoveCallbackTarget(this);
     }
