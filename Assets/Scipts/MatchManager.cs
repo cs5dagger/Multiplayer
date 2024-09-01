@@ -217,6 +217,11 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
                 {
                     UpdateStatsToDisplay();
                 }
+                /// Update leaderboard if open
+                if(UIController.instance.LeaderBoard.activeInHierarchy)
+                {
+                    ShowLeaderBoard();
+                }
                 break;
             }
         }
@@ -254,13 +259,45 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
         UIController.instance.leaderBoardPlayerDisplay.gameObject.SetActive(false);
 
-        foreach(PlayerInfo player in AllPlayers)
+        List<PlayerInfo> sorted = SortPlayer(AllPlayers);
+        foreach(PlayerInfo player in sorted)
         {
             LeaderBoardPlayer newPlayerDisplay = Instantiate(UIController.instance.leaderBoardPlayerDisplay, UIController.instance.leaderBoardPlayerDisplay.transform.parent);
             newPlayerDisplay.SetDetails(player.name, player.kills, player.death);
             newPlayerDisplay.gameObject.SetActive(true);
             leaderBoardPlayers.Add(newPlayerDisplay);
         }
+    }
+
+    /// <summary>
+    /// Sort according to kill count
+    /// </summary>
+    /// <param name="playerInfos"></param>
+    /// <returns></returns>
+    private List<PlayerInfo> SortPlayer(List<PlayerInfo> playerInfos)
+    {
+        List<PlayerInfo> sorted = new List<PlayerInfo>();
+
+        while(sorted.Count < playerInfos.Count)
+        {
+            int highest = -1;
+            PlayerInfo selectedPlayer = playerInfos[0];
+            
+            foreach(PlayerInfo player in playerInfos)
+            {
+                if(!sorted.Contains(player))
+                {
+                    if(player.kills > highest)
+                    {
+                        selectedPlayer = player;
+                        highest = player.kills;
+                    }
+                }
+            }
+            sorted.Add(selectedPlayer);
+        }
+
+        return sorted;
     }
 
     #endregion
