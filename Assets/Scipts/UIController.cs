@@ -32,6 +32,7 @@ public class UIController : MonoBehaviour
     public TMP_Text DeathsLabel;
     public GameObject LeaderBoard;
     public LeaderBoardPlayer leaderBoardPlayerDisplay;
+    public GameObject EndScreen;
     
     #endregion
 
