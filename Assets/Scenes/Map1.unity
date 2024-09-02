@@ -5698,6 +5698,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AllPlayers: []
+  KillsToWin: 3
+  MapCamPoint: {fileID: 36212596}
+  State: 0
+  WaitAfterEnding: 5
 --- !u!4 &1594300310
 Transform:
   m_ObjectHideFlags: 0

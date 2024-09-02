@@ -285,8 +285,16 @@ public class PlayerController : MonoBehaviourPunCallbacks
         /// If current player is owner than only update the camera
         if(photonView.IsMine)
         {
-            camera.transform.position = ViewPoint.position;
-            camera.transform.rotation = ViewPoint.rotation;
+            if(MatchManager.instance.State == MatchManager.GameState.Playing)
+            {
+                camera.transform.position = ViewPoint.position;
+                camera.transform.rotation = ViewPoint.rotation;
+            }
+            else
+            {
+                camera.transform.position = MatchManager.instance.MapCamPoint.position;
+                camera.transform.rotation = MatchManager.instance.MapCamPoint.rotation;
+            }
         }
     }
 

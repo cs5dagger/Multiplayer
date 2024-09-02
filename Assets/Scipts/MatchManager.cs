@@ -191,6 +191,7 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
                 index = i - 1;
             }
         }
+        StateCheck();
     }
 
     /// <summary>
@@ -349,6 +350,43 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
                 ListPlayersSend();
             }
         }
+    }
+
+    /// <summary>
+    /// Functionality based on state of game, ENDING
+    /// </summary>
+    void StateCheck()
+    {
+        if(State == GameState.Ending)
+        {
+            EndGame();
+        }
+    }
+
+    /// <summary>
+    /// End current game
+    /// </summary>
+    void EndGame()
+    {
+        State = GameState.Ending;
+        if(PhotonNetwork.IsMasterClient)
+        {
+            /// Destryo all instances after match
+            PhotonNetwork.DestroyAll();
+        }
+        UIController.instance.EndScreen.SetActive(true);
+        ShowLeaderBoard();
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+        StartCoroutine(EndGameCoroutine());
+    }
+
+    private IEnumerator EndGameCoroutine()
+    {
+        yield return new WaitForSeconds(WaitAfterEnding);
+        PhotonNetwork.AutomaticallySyncScene = false;
+        PhotonNetwork.LeaveRoom();
     }
 
     #endregion
