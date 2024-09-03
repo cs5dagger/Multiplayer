@@ -28,6 +28,8 @@ public class Launcher : MonoBehaviourPunCallbacks
     public GameObject StartButton;
     public GameObject RoomTestButton;
     public static bool HasSetNickName;
+    public string[] AllMaps;
+    public bool ChangeMapBetweenRounds = true;
 
     #endregion
 
@@ -341,7 +343,8 @@ public class Launcher : MonoBehaviourPunCallbacks
     /// </summary>
     public void StartGame()
     {
-        PhotonNetwork.LoadLevel(LevelToPlay);
+        PhotonNetwork.LoadLevel(AllMaps[Random.Range(0, AllMaps.Length)]);
+        //PhotonNetwork.LoadLevel(LevelToPlay);
         /// Workaround for data not updating when player joins an already started room
         PhotonNetwork.CurrentRoom.IsOpen = false;
     }
