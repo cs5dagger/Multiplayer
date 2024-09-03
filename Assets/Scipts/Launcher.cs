@@ -27,12 +27,12 @@ public class Launcher : MonoBehaviourPunCallbacks
     public string LevelToPlay;
     public GameObject StartButton;
     public GameObject RoomTestButton;
+    public static bool HasSetNickName;
 
     #endregion
 
     #region Private Variables 
 
-    private bool HasSetNickName;
     private List<TMP_Text> AllPlayerNames = new List<TMP_Text>();
     private List<RoomButton> AllRoomButtons = new List<RoomButton>();
 
@@ -62,6 +62,8 @@ public class Launcher : MonoBehaviourPunCallbacks
         RoomTestButton.SetActive(true);
 #endif
 
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
     /// <summary>
