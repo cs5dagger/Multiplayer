@@ -60,7 +60,6 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
         else
         {
             NewPlayerSend(PhotonNetwork.NickName);
-
             State = GameState.Playing;
         }
     }
