@@ -48,6 +48,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
     public Material[] AllSkins;
     public float ADSSpeed = 5;
     public Transform ADSOutPoint, ADSInPoint;
+    public AudioSource FootStepSlow, FootStepFast;
 
     // Start is called before the first frame update
     void Start()
@@ -104,10 +105,27 @@ public class PlayerController : MonoBehaviourPunCallbacks
             if (Input.GetKey(KeyCode.LeftShift))
             {
                 ActiveMoveSpeed = RunSpeed;
+                if(!FootStepFast.isPlaying && MoveDirection != Vector3.zero)
+                {
+                    FootStepSlow.Stop();
+                    FootStepFast.Play();
+                }
             }
             else
             {
                 ActiveMoveSpeed = MoveSpeed;
+                if (!FootStepSlow.isPlaying && MoveDirection != Vector3.zero)
+                {
+                    FootStepFast.Stop();
+                    FootStepSlow.Play();
+                }
+            }
+
+            /// if no movement or jumping
+            if(MoveDirection == Vector3.zero || !IsGrounded)
+            {
+                FootStepFast.Stop();
+                FootStepSlow.Stop();
             }
 
             float yVelocity = Movement.y;
@@ -265,6 +283,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
         }
         AllGuns[SelectedGun].MuzzleFlash.SetActive(true);
         MuzzleCounter = MuzzleDisplayTime;
+        AllGuns[SelectedGun].ShotSound.Stop();
+        AllGuns[SelectedGun].ShotSound.Play();
     }
 
     /// <summary>
