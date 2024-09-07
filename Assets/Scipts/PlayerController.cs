@@ -46,6 +46,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
     public GameObject PlayerModel;
     public Transform ModelGunPoint, GunHolder;
     public Material[] AllSkins;
+    public float ADSSpeed = 5;
+    public Transform ADSOutPoint, ADSInPoint;
 
     // Start is called before the first frame update
     void Start()
@@ -203,6 +205,18 @@ public class PlayerController : MonoBehaviourPunCallbacks
             PlayerAnimator.SetBool("grounded", IsGrounded);
             /// magnitude represents the distance being covered
             PlayerAnimator.SetFloat("speed", MoveDirection.magnitude);
+
+            /// Aim down sight when right click
+            if(Input.GetMouseButton(1)) 
+            {
+                camera.fieldOfView = Mathf.Lerp(camera.fieldOfView, AllGuns[SelectedGun].ADSZoom, ADSSpeed * Time.deltaTime);
+                GunHolder.position = Vector3.Lerp(GunHolder.position, ADSInPoint.position, ADSSpeed * Time.deltaTime);
+            }
+            else
+            {
+                camera.fieldOfView = Mathf.Lerp(camera.fieldOfView, 60f, ADSSpeed * Time.deltaTime);
+                GunHolder.position = Vector3.Lerp(GunHolder.position, ADSOutPoint.position, ADSSpeed * Time.deltaTime);
+            }
 
             if (Input.GetKeyDown(KeyCode.Escape))
             {

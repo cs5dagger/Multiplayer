@@ -1,5 +1,67 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &543553861
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 543553862}
+  m_Layer: 0
+  m_Name: ADSIn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &543553862
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 543553861}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.2, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3996294800895624450}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &556388550
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 556388551}
+  m_Layer: 0
+  m_Name: ADSOut
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &556388551
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 556388550}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3996294800895624450}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1329503422
 GameObject:
   m_ObjectHideFlags: 0
@@ -82,6 +144,7 @@ MonoBehaviour:
   HeatPerShot: 5
   MuzzleFlash: {fileID: 4302302289756200447}
   ShotDamage: 50
+  ADSZoom: 30
 --- !u!1 &3996294800895624449
 GameObject:
   m_ObjectHideFlags: 0
@@ -111,6 +174,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3996294801731870625}
+  - {fileID: 556388551}
+  - {fileID: 543553862}
   m_Father: {fileID: 3996294800941443791}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -253,6 +318,9 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 3212f94e07d1deb45aa6a9a29053538a, type: 2}
   - {fileID: 2100000, guid: 4baa1a7cf7fd5e54895a5459a1d0a433, type: 2}
   - {fileID: 2100000, guid: 3cc029f6eccfe434ba9eb087e3e1d33b, type: 2}
+  ADSSpeed: 5
+  ADSOutPoint: {fileID: 556388551}
+  ADSInPoint: {fileID: 543553862}
 --- !u!143 &3996294800941443785
 CharacterController:
   m_ObjectHideFlags: 0
@@ -392,6 +460,7 @@ MonoBehaviour:
   HeatPerShot: 2
   MuzzleFlash: {fileID: 4302302288791137500}
   ShotDamage: 25
+  ADSZoom: 50
 --- !u!1 &3996294801409250729
 GameObject:
   m_ObjectHideFlags: 0
@@ -443,6 +512,7 @@ MonoBehaviour:
   HeatPerShot: 1
   MuzzleFlash: {fileID: 4302302288588816260}
   ShotDamage: 15
+  ADSZoom: 45
 --- !u!1 &3996294801549150991
 GameObject:
   m_ObjectHideFlags: 0
