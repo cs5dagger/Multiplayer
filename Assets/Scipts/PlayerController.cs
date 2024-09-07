@@ -45,6 +45,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
     public Animator PlayerAnimator;
     public GameObject PlayerModel;
     public Transform ModelGunPoint, GunHolder;
+    public Material[] AllSkins;
 
     // Start is called before the first frame update
     void Start()
@@ -70,6 +71,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
             GunHolder.localPosition = Vector3.zero;
             GunHolder.localRotation = Quaternion.identity;
         }
+        PlayerModel.GetComponent<Renderer>().material = AllSkins[photonView.Owner.ActorNumber % AllSkins.Length];
     }
 
     // Update is called once per frame
